@@ -1,0 +1,51 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active:
+  application:
+    name: scrape
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/netpick_scrape
+    username: postgres
+    password: password
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      max-lifetime: 1800000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  docker:
+    compose:
+      enabled: false
+      file: docker-compose.yml
+
+cors:
+  allowed-origins: "*"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - "health"
+        - "info"
+
+security:
+  jwt:
+    secret-key: "$@$&@^*#%(#&(#%^*@&%^!#$^!$#^@%&@$&@$^*@$^&%^@#$%))hkhisREAL!^!#$^!$^"
+    expiration-time: 3
+    issuer: "https://netpick.ir"
+
+env:
+  page-size: 25
