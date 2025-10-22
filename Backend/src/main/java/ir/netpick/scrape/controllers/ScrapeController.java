@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ir.netpick.scrape.services.ScrapeService;
-import ir.netpick.scrape.models.ApiKey;
 import ir.netpick.scrape.models.ApiKeyRequest;
 import ir.netpick.scrape.models.SearchQuery;
 

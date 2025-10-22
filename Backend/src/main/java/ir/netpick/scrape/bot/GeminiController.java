@@ -31,7 +31,8 @@ public class GeminiController {
 
     @GetMapping("api")
     public void api() {
-        apiCaller.caller();
+        apiCaller.callGoogleSearch();
+        ;
     }
 
 }

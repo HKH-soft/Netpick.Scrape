@@ -15,6 +15,8 @@ public class GenerateTextFromTextInput {
         text + " say it in a few words",
         null);
 
+    client.close();
+
     return response.text();
   }
 }

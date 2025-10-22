@@ -18,17 +18,21 @@ import ir.netpick.scrape.models.Role;
 import ir.netpick.scrape.models.User;
 import ir.netpick.scrape.repositories.RoleRepository;
 import ir.netpick.scrape.repositories.UserRepository;
+import ir.netpick.scrape.scrapper.Scrape;
 
 @Component
 public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
   private final RoleRepository roleRepository;
   private final UserRepository userRepository;
+  private final Scrape scrape;
 
   private final PasswordEncoder passwordEncoder;
 
-  public Seeder(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+  public Seeder(RoleRepository roleRepository, UserRepository userRepository,
+      Scrape scrape, PasswordEncoder passwordEncoder) {
     this.roleRepository = roleRepository;
     this.userRepository = userRepository;
+    this.scrape = scrape;
     this.passwordEncoder = passwordEncoder;
   }
 
@@ -37,6 +41,7 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
     this.loadRoles();
     this.createSuperAdmin();
     this.gsonTest();
+    this.webScrape();
   }
 
   private void createSuperAdmin() {
@@ -96,5 +101,9 @@ public class Seeder implements ApplicationListener<ContextRefreshedEvent> {
       String link = item.get("link").getAsString();
       System.out.println(title + " -> " + link);
     }
+  }
+
+  private void webScrape() {
+    scrape.webGet(); // yeahhhhhh it workssssss
   }
 }

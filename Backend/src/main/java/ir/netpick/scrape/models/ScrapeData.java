@@ -49,6 +49,11 @@ public class ScrapeData {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public ScrapeData(String location, ScrapeJob scrapeJob) {
+        this.location = location;
+        this.scrapeJob = scrapeJob;
+    }
+
     public UUID getId() {
         return id;
     }

@@ -45,12 +45,17 @@ public class ScrapeJob {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public ScrapeJob(String link) {
-        this.link = link;
+    public ScrapeJob() {
     }
 
-    public ScrapeJob(String link, String description) {
+    public ScrapeJob(String link, int attempt) {
         this.link = link;
+        this.attempt = attempt;
+    }
+
+    public ScrapeJob(String link, int attempt, String description) {
+        this.link = link;
+        this.attempt = attempt;
         this.description = description;
     }
 
@@ -60,14 +65,6 @@ public class ScrapeJob {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getlink() {
-        return link;
-    }
-
-    public void setlink(String link) {
-        this.link = link;
     }
 
     public String getDescription() {

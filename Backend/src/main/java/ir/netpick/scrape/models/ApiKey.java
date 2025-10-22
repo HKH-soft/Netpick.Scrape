@@ -37,6 +37,9 @@ public class ApiKey {
     @Column(name = "link_id", nullable = false)
     private String apiLink;
 
+    @Column(name = "search_engine_id", nullable = false)
+    private String searchEngineId;
+
     @Column(name = "description")
     private String description;
 
@@ -123,6 +126,14 @@ public class ApiKey {
 
     public void setApiLink(String apiLink) {
         this.apiLink = apiLink;
+    }
+
+    public String getSearchEngineId() {
+        return searchEngineId;
+    }
+
+    public void setSearchEngineId(String searchEngineId) {
+        this.searchEngineId = searchEngineId;
     }
 
 }

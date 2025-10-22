@@ -38,5 +38,25 @@
     "name": "env.page-size",
     "type": "java.lang.String",
     "description": "A description for 'env.page-size'"
+  },
+  {
+    "name": "web.chrome.location",
+    "type": "java.lang.String",
+    "description": "A description for 'web.chrome.location'"
+  },
+  {
+    "name": "web.driver.location",
+    "type": "java.lang.String",
+    "description": "A description for 'web.driver.location'"
+  },
+  {
+    "name": "web.chrome-location",
+    "type": "java.lang.String",
+    "description": "A description for 'web.chrome-location'"
+  },
+  {
+    "name": "web.driver-location",
+    "type": "java.lang.String",
+    "description": "A description for 'web.driver-location'"
   }
 ]}

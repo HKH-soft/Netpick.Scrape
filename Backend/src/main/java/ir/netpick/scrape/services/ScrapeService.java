@@ -1,10 +1,17 @@
 package ir.netpick.scrape.services;
 
+import ir.netpick.scrape.exception.ResourceNotFoundExeption;
 import ir.netpick.scrape.models.ApiKey;
 import ir.netpick.scrape.models.ApiKeyRequest;
+import ir.netpick.scrape.models.ScrapeData;
+import ir.netpick.scrape.models.ScrapeJob;
 import ir.netpick.scrape.models.SearchQuery;
 import ir.netpick.scrape.repositories.ApiKeyRepository;
+import ir.netpick.scrape.repositories.ScrapeDataRepository;
+import ir.netpick.scrape.repositories.ScrapeJobRepository;
 import ir.netpick.scrape.repositories.SearchQueryRepository;
+import ir.netpick.scrape.scrapper.FileManagment;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -12,21 +19,49 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ScrapeService {
 
     private final ApiKeyRepository apiKeyRepository;
     private final SearchQueryRepository searchQueryRepository;
+    private final ScrapeJobRepository scrapeJobRepository;
+    private final FileManagment fileManagment;
+    private final ScrapeDataRepository scrapeDataRepository;
 
     @Value("${env.page-size:10}")
     private int pageSize;
 
-    public ScrapeService(ApiKeyRepository apiKeyRepository, SearchQueryRepository searchQueryRepository) {
-        this.apiKeyRepository = apiKeyRepository;
-        this.searchQueryRepository = searchQueryRepository;
+    // scrape data
+
+    public void createScrapeData(String pageData, UUID scrapeJobId) {
+        ScrapeJob scrapeJob = scrapeJobRepository.findById(scrapeJobId).orElseThrow(
+                () -> new ResourceNotFoundExeption("ScrapeJob with id [%s] was not found!".formatted(scrapeJobId)));
+        String fileName = LocalDateTime.now() + ".txt";
+        fileManagment.CreateAFile(scrapeJobId, scrapeJob.getAttempt(), fileName, pageData);
+        ScrapeData scrapeData = new ScrapeData(fileName, scrapeJob);
+        scrapeDataRepository.save(scrapeData);
     }
+
+    // scrape jobs
+
+    public void createScrapeJob(List<String> urls, List<String> titles) {
+        if (urls.size() != titles.size()) {
+            return;
+        }
+        for (int i = 0; i < urls.size(); i++) {
+            if (!scrapeJobRepository.existsByLink(urls.get(i))) {
+                ScrapeJob scrapeJob = new ScrapeJob(urls.get(i), 0, titles.get(i));
+                scrapeJobRepository.save(scrapeJob);
+            }
+        }
+    }
+
+    // api keys
 
     public Page<ApiKey> allKeys(int page) {
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -55,6 +90,8 @@ public class ScrapeService {
     public void deleteKey(UUID id) {
         apiKeyRepository.deleteById(id);
     }
+
+    // search querys
 
     public Page<SearchQuery> allSearchQuerys(int page) {
         Pageable pageable = PageRequest.of(page, pageSize);

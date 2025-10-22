@@ -1,108 +1,69 @@
 package ir.netpick.scrape.scrapper;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import ir.netpick.scrape.models.ApiKey;
 import ir.netpick.scrape.models.SearchQuery;
-import ir.netpick.scrape.models.ScrapeJob;
 import ir.netpick.scrape.repositories.ApiKeyRepository;
 import ir.netpick.scrape.repositories.SearchQueryRepository;
-import ir.netpick.scrape.repositories.ScrapeJobRepository;
+import ir.netpick.scrape.services.ScrapeService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class ApiCaller {
+    private static final Logger log = LogManager.getLogger(ApiCaller.class);
 
     private final ApiKeyRepository apiKeyRepository;
-    private final ScrapeJobRepository scrapeJobRepository;
+    private final ScrapeService scrapeService;
     private final SearchQueryRepository searchQueryRepository;
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    public ApiCaller(ApiKeyRepository apiKeyRepository,
-            ScrapeJobRepository scrapeJobRepository, SearchQueryRepository searchQueryRepository) {
-        this.apiKeyRepository = apiKeyRepository;
-        this.scrapeJobRepository = scrapeJobRepository;
-        this.searchQueryRepository = searchQueryRepository;
-    }
+    private final WebClient webClient = WebClient.create();
 
     @Transactional
-    public void caller() {
-        List<ApiKey> keys = apiKeyRepository.findAll();
-        List<SearchQuery> searchQueries = searchQueryRepository.findAllBelowTenOrderByLinkCount();
+    public void callGoogleSearch() {
+        List<ApiKey> keys = new ArrayList<>(apiKeyRepository.findAll());
+        if (keys.isEmpty())
+            throw new RuntimeException("No API keys configured");
 
-        for (SearchQuery searchQuery : searchQueries) {
-            for (int index = 0; index < 15; index++) {
-                String sentence = searchQuery.getSentence().replace(' ', '+');
+        List<SearchQuery> queries = searchQueryRepository.findAllBelowTenOrderByLinkCount();
 
-                String uri = keys.getFirst().getApiLink()
-                        .replace("<query>", sentence)
-                        .replace("<count>", "")
-                        .replace("<start_index>", "")
-                        .replace("<search_engine_id>", "")
-                        .replace("<api_key>", keys.getFirst().getKey());
+        for (SearchQuery query : queries) {
+            for (int i = 0; i < 3; i++) {
+                String uri = buildUri(query.getSentence(), i, keys.get(0));
+                try {
+                    String json = webClient.get().uri(uri)
+                            .retrieve()
+                            .bodyToMono(String.class)
+                            .block();
 
-                ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
-                if (response.getStatusCode() == HttpStatus.OK) {
-                    linkParser(response.getBody());
+                    List<LinkParser.LinkResult> parsedLinks = LinkParser.parse(json);
+                    List<String> urls = parsedLinks.stream().map(LinkParser.LinkResult::getLink).toList();
+                    List<String> titles = parsedLinks.stream().map(LinkParser.LinkResult::getTitle).toList();
+
+                    scrapeService.createScrapeJob(urls, titles);
+
+                } catch (Exception e) {
+                    log.error("API call failed for {}", query.getSentence(), e);
                 }
-                if (keys.getFirst().getPoint() <= 0) {
-                    keys.removeFirst();
-                }
             }
         }
     }
 
-    public void linkParser(String json) {
-        JsonObject root = JsonParser.parseString(json).getAsJsonObject();
-        JsonArray items = root.getAsJsonArray("items");
-        List<String> titles = new ArrayList<String>();
-        List<String> links = new ArrayList<String>();
-        for (JsonElement element : items) {
-            JsonObject item = element.getAsJsonObject();
-            titles.add(item.get("title").getAsString());
-            links.add(item.get("link").getAsString());
-        }
-        scrapeJobCreator(links, titles);
-    }
-
-    public Integer scrapeJobCreator(List<String> links) {
-        int count = 0;
-        for (String link : links) {
-            if (scrapeJobRepository.existsByLink(link)) {
-                break;
-            }
-            ScrapeJob job = new ScrapeJob(link);
-            scrapeJobRepository.save(job);
-            count++;
-        }
-        return count;
-    }
-
-    public Integer scrapeJobCreator(List<String> links, List<String> descriptions) {
-        int count = 0;
-        for (int i = 0; i < links.size(); i++) {
-            if (scrapeJobRepository.existsByLink(links.get(i))) {
-                break;
-            }
-            ScrapeJob job = new ScrapeJob(links.get(i), descriptions.get(1));
-            scrapeJobRepository.save(job);
-            count++;
-        }
-        for (String link : links) {
-            System.out.println(link);
-        }
-        return count;
+    private String buildUri(String sentence, int index, ApiKey key) {
+        return key.getApiLink()
+                .replace("<query>", URLEncoder.encode(sentence, StandardCharsets.UTF_8))
+                .replace("<api_key>", key.getKey())
+                .replace("<search_engine_id>", key.getSearchEngineId())
+                .replace("<start_index>", String.valueOf(index * 10 + 1));
     }
 }
