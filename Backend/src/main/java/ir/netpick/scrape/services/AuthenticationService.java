@@ -9,8 +9,8 @@ import ir.netpick.scrape.models.AuthenticationSigninRequest;
 import ir.netpick.scrape.models.AuthenticationSignupRequest;
 import ir.netpick.scrape.models.User;
 import ir.netpick.scrape.models.UserDTO;
-import ir.netpick.scrape.mapper.UserDTOMapper;
 import ir.netpick.scrape.jwt.JWTUtil;
+import ir.netpick.scrape.mappers.UserDTOMapper;
 
 @Service
 public class AuthenticationService {

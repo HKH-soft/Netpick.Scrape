@@ -1,4 +1,4 @@
-package ir.netpick.scrape.mapper;
+package ir.netpick.scrape.mappers;
 
 import java.util.function.Function;
 

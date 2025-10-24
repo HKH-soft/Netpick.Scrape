@@ -44,6 +44,9 @@ public class SearchQuery {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public SearchQuery() {
+    }
+
     public SearchQuery(String sentence, Integer link_count) {
         this.sentence = sentence;
         this.link_count = link_count;

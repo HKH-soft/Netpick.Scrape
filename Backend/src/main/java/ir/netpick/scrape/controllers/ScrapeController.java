@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ir.netpick.scrape.services.ScrapeService;
+import lombok.RequiredArgsConstructor;
 import ir.netpick.scrape.models.ApiKeyRequest;
 import ir.netpick.scrape.models.SearchQuery;
+import ir.netpick.scrape.scrapper.ApiCaller;
+import ir.netpick.scrape.scrapper.Scrape;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,13 +24,22 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/scrape")
+@RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
 public class ScrapeController {
 
     private final ScrapeService scrapeService;
+    private final Scrape scrape;
+    private final ApiCaller apiCaller;
 
-    public ScrapeController(ScrapeService scrapeService) {
-        this.scrapeService = scrapeService;
+    @PostMapping("start-google")
+    public void startSearch() {
+        apiCaller.callGoogleSearch();
+    }
+
+    @PostMapping("start-scrape")
+    public void startScrapping(@RequestBody String entity) {
+        scrape.webGet();
     }
 
     // API Keys CRUD

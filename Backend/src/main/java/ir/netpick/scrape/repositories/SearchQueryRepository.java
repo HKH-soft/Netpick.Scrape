@@ -11,6 +11,6 @@ import ir.netpick.scrape.models.SearchQuery;
 
 @Repository
 public interface SearchQueryRepository extends JpaRepository<SearchQuery, UUID> {
-    @Query(value = "Select * FROM keyword k WHERE k.link_count <= 10 ORDER BY link_count", nativeQuery = true)
+    @Query(value = "Select * FROM search_query q WHERE q.link_count <= 10 ORDER BY link_count", nativeQuery = true)
     List<SearchQuery> findAllBelowTenOrderByLinkCount();
 }

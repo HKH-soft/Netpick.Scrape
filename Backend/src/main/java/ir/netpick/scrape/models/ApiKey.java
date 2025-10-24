@@ -51,17 +51,22 @@ public class ApiKey {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public ApiKey(String key, Integer point, String apiLink) {
+    public ApiKey(String key, Integer point, String apiLink, String searchEngineId) {
         this.key = key;
         this.point = point;
         this.apiLink = apiLink;
+        this.searchEngineId = searchEngineId;
     }
 
-    public ApiKey(String key, Integer point, String apiLink, String description) {
+    public ApiKey(String key, Integer point, String apiLink, String searchEngineId, String description) {
         this.key = key;
         this.point = point;
         this.apiLink = apiLink;
+        this.searchEngineId = searchEngineId;
         this.description = description;
+    }
+
+    public ApiKey() {
     }
 
     public UUID getId() {

@@ -12,18 +12,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "scrape_data", indexes = {
-        @Index(name = "idx_scrapedata_dataLocation", columnList = "data_location")
-}, uniqueConstraints = {
-        @UniqueConstraint(name = "uniq_scrapedata_dataLocation", columnNames = { "data_location" })
-})
+@Table(name = "scrape_data")
 public class ScrapeData {
 
     @Id
@@ -31,8 +25,11 @@ public class ScrapeData {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "data_location", nullable = false)
-    private String location;
+    @Column(name = "file_name", nullable = false)
+    private String fileName;
+
+    @Column(name = "attempt_number", nullable = false)
+    private int attemptNumber;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "job_id", referencedColumnName = "id", nullable = false)
@@ -49,9 +46,13 @@ public class ScrapeData {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public ScrapeData(String location, ScrapeJob scrapeJob) {
-        this.location = location;
+    public ScrapeData(String fileName, int attemptNumber, ScrapeJob scrapeJob) {
+        this.fileName = fileName;
+        this.attemptNumber = attemptNumber;
         this.scrapeJob = scrapeJob;
+    }
+
+    public ScrapeData() {
     }
 
     public UUID getId() {
@@ -60,14 +61,6 @@ public class ScrapeData {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public ScrapeJob getScrapeJob() {
@@ -100,6 +93,22 @@ public class ScrapeData {
 
     public void setParsed(boolean parsed) {
         Parsed = parsed;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public int getAttemptNumber() {
+        return attemptNumber;
+    }
+
+    public void setAttemptNumber(int attemptNumber) {
+        this.attemptNumber = attemptNumber;
     }
 
 }

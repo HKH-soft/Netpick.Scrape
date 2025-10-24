@@ -32,7 +32,13 @@ public class ScrapeJob {
     private String link;
 
     @Column(name = "attempt_number", nullable = false)
-    private Integer attempt;
+    private Integer attempt = 0;
+
+    @Column(name = "been_scraped")
+    private Boolean beenScraped = false;
+
+    @Column(name = "scrape_failed")
+    private Boolean scrapeFailed = false;
 
     @Column(name = "description")
     private String description;
@@ -48,14 +54,12 @@ public class ScrapeJob {
     public ScrapeJob() {
     }
 
-    public ScrapeJob(String link, int attempt) {
+    public ScrapeJob(String link) {
         this.link = link;
-        this.attempt = attempt;
     }
 
-    public ScrapeJob(String link, int attempt, String description) {
+    public ScrapeJob(String link, String description) {
         this.link = link;
-        this.attempt = attempt;
         this.description = description;
     }
 
@@ -105,6 +109,22 @@ public class ScrapeJob {
 
     public void setAttempt(Integer attempt) {
         this.attempt = attempt;
+    }
+
+    public Boolean getBeenScraped() {
+        return beenScraped;
+    }
+
+    public void setBeenScraped(Boolean beenScraped) {
+        this.beenScraped = beenScraped;
+    }
+
+    public Boolean getScrapeFailed() {
+        return scrapeFailed;
+    }
+
+    public void setScrapeFailed(Boolean scrapeFailed) {
+        this.scrapeFailed = scrapeFailed;
     }
 
 }

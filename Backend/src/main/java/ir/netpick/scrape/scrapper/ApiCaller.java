@@ -1,7 +1,5 @@
 package ir.netpick.scrape.scrapper;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ApiCaller {
-    private static final Logger log = LogManager.getLogger(ApiCaller.class);
+    private static final Logger logger = LogManager.getLogger(ApiCaller.class);
 
     private final ApiKeyRepository apiKeyRepository;
     private final ScrapeService scrapeService;
@@ -37,6 +35,8 @@ public class ApiCaller {
 
         List<SearchQuery> queries = searchQueryRepository.findAllBelowTenOrderByLinkCount();
 
+        System.out.println(buildUri(queries.get(0).getSentence(), 0, keys.get(0)));
+
         for (SearchQuery query : queries) {
             for (int i = 0; i < 3; i++) {
                 String uri = buildUri(query.getSentence(), i, keys.get(0));
@@ -49,21 +49,25 @@ public class ApiCaller {
                     List<LinkParser.LinkResult> parsedLinks = LinkParser.parse(json);
                     List<String> urls = parsedLinks.stream().map(LinkParser.LinkResult::getLink).toList();
                     List<String> titles = parsedLinks.stream().map(LinkParser.LinkResult::getTitle).toList();
-
-                    scrapeService.createScrapeJob(urls, titles);
+                    System.out.println(urls);
+                    System.out.println(titles);
+                    scrapeService.createScrapeJobList(urls, titles);
 
                 } catch (Exception e) {
-                    log.error("API call failed for {}", query.getSentence(), e);
+                    logger.error("API call failed for {}", query.getSentence(), e);
                 }
             }
         }
     }
 
     private String buildUri(String sentence, int index, ApiKey key) {
+        int count = 10;
         return key.getApiLink()
-                .replace("<query>", URLEncoder.encode(sentence, StandardCharsets.UTF_8))
+                .replace("<query>", sentence.replace(" ", "+"))
                 .replace("<api_key>", key.getKey())
                 .replace("<search_engine_id>", key.getSearchEngineId())
-                .replace("<start_index>", String.valueOf(index * 10 + 1));
+                .replace("<start_index>", String.valueOf(index * count + 1))
+                .replace("<count>", String.valueOf(count));
     }
+
 }

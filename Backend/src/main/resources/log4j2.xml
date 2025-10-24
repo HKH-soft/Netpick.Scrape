@@ -5,21 +5,21 @@
             <PatternLayout pattern="[%d{HH:mm:ss}] [%-5p] %c{1} - %m%n"/>
         </Console>
 
-        <File name="FileLogger" fileName="logs/info.log" append="true">
+        <File name="InfoFile" fileName="logs/info.log" append="true">
             <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%-5p] %c{1} - %m%n"/>
         </File>
-        <File name="FileLoggerDebug" fileName="logs/debug.log" append="true">
+
+        <File name="DebugFile" fileName="logs/debug.log" append="true">
             <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%-5p] %c{1} - %m%n"/>
         </File>
+
     </Appenders>
 
     <Loggers>
         <AsyncRoot level="info">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="FileLogger"/>
-        </AsyncRoot >
-        <AsyncRoot level="debug">
-            <AppenderRef ref="FileLoggerDebug"/>
-        </AsyncRoot >
+            <AppenderRef ref="InfoFile"/>
+            <AppenderRef ref="DebugFile"/>
+        </AsyncRoot>
     </Loggers>
 </Configuration>

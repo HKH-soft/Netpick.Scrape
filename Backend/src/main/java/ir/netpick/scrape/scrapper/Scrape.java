@@ -26,8 +26,12 @@ public class Scrape {
     private final ScrapeJobRepository scrapeJobRepository;
     private final ScrapeService scrapeService;
 
+    public int getDataCount() {
+        return scrapeService.allDatas().size();
+    }
+
     public void webGet() {
-        List<ScrapeJob> scrapeJobs = scrapeJobRepository.findByAttemptLessThanEqual(0);
+        List<ScrapeJob> scrapeJobs = scrapeJobRepository.findByAttemptLessThanEqual(3);
 
         if (scrapeJobs.size() <= 0) {
             return;
@@ -43,10 +47,13 @@ public class Scrape {
                 String pageSource = driver.getPageSource();
                 scrapeService.createScrapeData(pageSource, scrapeJob.getId());
 
+                scrapeJob.setAttempt(scrapeJob.getAttempt() + 1);
+                scrapeService.updateScrapeJob(scrapeJob, scrapeJob.getId());
+
             }
 
             // Wait for a few seconds (for demonstration purposes only)
-            Thread.sleep(3000);
+            Thread.sleep(9000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

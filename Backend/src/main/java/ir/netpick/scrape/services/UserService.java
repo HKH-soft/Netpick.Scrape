@@ -18,7 +18,7 @@ import ir.netpick.scrape.enums.RoleEnum;
 import ir.netpick.scrape.exception.DuplicateResourceExeption;
 import ir.netpick.scrape.exception.RequestValidationExeption;
 import ir.netpick.scrape.exception.ResourceNotFoundExeption;
-import ir.netpick.scrape.mapper.UserDTOMapper;
+import ir.netpick.scrape.mappers.UserDTOMapper;
 import ir.netpick.scrape.models.AllUsersResponse;
 import ir.netpick.scrape.models.AuthenticationSignupRequest;
 import ir.netpick.scrape.models.Role;
