@@ -10,10 +10,10 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>ir.netpick</groupId>
-	<artifactId>scrape</artifactId>
+	<artifactId>mailMine</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>scrape</name>
-	<description>a simple webscraper</description>
+	<name>Mail-Mine</name>
+	<description>a Mail Miner</description>
 	<url/>
 	<licenses>
 		<license/>
