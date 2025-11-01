@@ -21,7 +21,7 @@ export default function ModalBasedAlerts() {
         </button>
         <button
           onClick={infoModal.openModal}
-          className="px-4 py-3 text-sm font-medium text-white rounded-lg bg-blue-light-500 shadow-theme-xs hover:bg-blue-light-600"
+          className="px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
         >
           Info Alert
         </button>
@@ -106,7 +106,7 @@ export default function ModalBasedAlerts() {
         <div className="text-center">
           <div className="relative flex items-center justify-center z-1 mb-7">
             <svg
-              className="fill-blue-light-50 dark:fill-blue-light-500/15"
+              className="fill-brand-50 dark:fill-brand-500/15"
               width="90"
               height="90"
               viewBox="0 0 90 90"
@@ -122,7 +122,7 @@ export default function ModalBasedAlerts() {
 
             <span className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
               <svg
-                className="fill-blue-light-500 dark:fill-blue-light-500"
+                className="fill-brand-500 dark:fill-brand-500"
                 width="38"
                 height="38"
                 viewBox="0 0 38 38"
@@ -150,7 +150,7 @@ export default function ModalBasedAlerts() {
           <div className="flex items-center justify-center w-full gap-3 mt-7">
             <button
               type="button"
-              className="flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-blue-light-500 shadow-theme-xs hover:bg-blue-light-600 sm:w-auto"
+              className="flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 sm:w-auto"
             >
               Okay, Got It
             </button>
