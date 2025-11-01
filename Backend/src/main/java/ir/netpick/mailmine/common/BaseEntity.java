@@ -21,20 +21,20 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
-    private UUID id;
+    protected UUID id;
 
     @Column(name = "description")
-    private String description;
+    protected String description;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
-    private LocalDateTime createdAt;
+    protected LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    protected LocalDateTime updatedAt;
 
     @Column(name = "deleted", nullable = false)
-    private Boolean deleted = false;
+    protected Boolean deleted = false;
 
 }
