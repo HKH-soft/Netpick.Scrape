@@ -3,7 +3,6 @@ package ir.netpick.mailmine.auth.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,6 +51,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "profileImageId")
     private UUID profileImageId;
+
+    // @Column(name = "state")
+    // private UserStateEnum userState;
 
     @Column(name = "prefrence")
     private String Prefrence;

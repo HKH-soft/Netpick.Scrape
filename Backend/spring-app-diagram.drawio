@@ -130,7 +130,7 @@
                 <mxCell id="43" value="- scrapeService: ScrapeService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="42" vertex="1">
                     <mxGeometry y="30" width="240" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="44" value="- scrape: PageScrape" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="42" vertex="1">
+                <mxCell id="44" value="- scrape: Scraper" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="42" vertex="1">
                     <mxGeometry y="56" width="240" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="45" value="- apiCaller: ApiCaller" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="42" vertex="1">
@@ -211,10 +211,10 @@
                 <mxCell id="70" value="+ handleException(e: UsernameNotFoundException, request: HttpServletRequest): ResponseEntity&amp;lt;ApiError&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="66" vertex="1">
                     <mxGeometry y="316" width="260" height="104" as="geometry"/>
                 </mxCell>
-                <mxCell id="71" value="+ handleException(e: DuplicateResourceExeption, request: HttpServletRequest): ResponseEntity&amp;lt;ApiError&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="66" vertex="1">
+                <mxCell id="71" value="+ handleException(e: DuplicateResourceException, request: HttpServletRequest): ResponseEntity&amp;lt;ApiError&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="66" vertex="1">
                     <mxGeometry y="420" width="260" height="104" as="geometry"/>
                 </mxCell>
-                <mxCell id="72" value="+ handleException(e: ResourceNotFoundExeption, request: HttpServletRequest): ResponseEntity&amp;lt;ApiError&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="66" vertex="1">
+                <mxCell id="72" value="+ handleException(e: ResourceNotFoundException, request: HttpServletRequest): ResponseEntity&amp;lt;ApiError&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="66" vertex="1">
                     <mxGeometry y="524" width="260" height="104" as="geometry"/>
                 </mxCell>
                 <mxCell id="73" value="+ handleException(e: InsufficientAuthenticationException, request: HttpServletRequest): ResponseEntity&amp;lt;ApiError&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="66" vertex="1">
@@ -367,7 +367,7 @@
                 <mxCell id="122" value="- CGLIB$BIND_CALLBACKS(arg0: Object): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="101" vertex="1">
                     <mxGeometry y="864" width="240" height="52" as="geometry"/>
                 </mxCell>
-                <mxCell id="123" value="scrapper" style="swimlane;html=1;startSize=30;horizontal=1;fillColor=none;swimlaneFillColor=none;collapsible=1;swimlaneLine=1;strokeColor=#000000;rounded=0;align=center;verticalAlign=top;fontStyle=1;whiteSpace=wrap;" parent="2" vertex="1">
+                <mxCell id="123" value="scraper" style="swimlane;html=1;startSize=30;horizontal=1;fillColor=none;swimlaneFillColor=none;collapsible=1;swimlaneLine=1;strokeColor=#000000;rounded=0;align=center;verticalAlign=top;fontStyle=1;whiteSpace=wrap;" parent="2" vertex="1">
                     <mxGeometry x="20" y="6150" width="280" height="1846" as="geometry"/>
                 </mxCell>
                 <mxCell id="124" value="&amp;laquo;@Service&amp;raquo;&lt;br&gt;&lt;b&gt;LinkParser&lt;/b&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#000000;html=1;whiteSpace=wrap;" parent="123" vertex="1">
@@ -445,7 +445,7 @@
                 <mxCell id="148" value="- buildFilePath(id: UUID, attemptNumber: int, fileName: String): Path" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="139" vertex="1">
                     <mxGeometry y="474" width="240" height="78" as="geometry"/>
                 </mxCell>
-                <mxCell id="149" value="&amp;laquo;@Service&amp;raquo;&lt;br&gt;&lt;b&gt;PageScrape&lt;/b&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#000000;html=1;whiteSpace=wrap;" parent="123" vertex="1">
+                <mxCell id="149" value="&amp;laquo;@Service&amp;raquo;&lt;br&gt;&lt;b&gt;Scraper&lt;/b&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;fillColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#000000;html=1;whiteSpace=wrap;" parent="123" vertex="1">
                     <mxGeometry x="20" y="1202" width="240" height="292" as="geometry"/>
                 </mxCell>
                 <mxCell id="150" value="~ webProperties: WebProperties" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="149" vertex="1">
@@ -487,7 +487,7 @@
                 <mxCell id="162" value="- scrapeService: ScrapeService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="159" vertex="1">
                     <mxGeometry y="82" width="240" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="163" value="- pageScrape: PageScrape" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="159" vertex="1">
+                <mxCell id="163" value="- scraper: Scraper" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="159" vertex="1">
                     <mxGeometry y="108" width="240" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="164" value="- scrapeDataRepository: ScrapeDataRepository" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="159" vertex="1">
@@ -808,7 +808,7 @@
                 <mxCell id="269" value="+ allUsers(pageNumber: Integer, sortBy: String, direction: Direction): AllUsersResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="258" vertex="1">
                     <mxGeometry y="422" width="240" height="78" as="geometry"/>
                 </mxCell>
-                <mxCell id="270" value="- lambda$0(arg0: String): ResourceNotFoundExeption" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="258" vertex="1">
+                <mxCell id="270" value="- lambda$0(arg0: String): ResourceNotFoundException" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="258" vertex="1">
                     <mxGeometry y="500" width="240" height="52" as="geometry"/>
                 </mxCell>
                 <mxCell id="271" value="+ isRegisterRequestValid(request: AuthenticationSignupRequest): boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="258" vertex="1">
@@ -901,10 +901,10 @@
                 <mxCell id="300" value="+ allJobs(page: int): List&amp;lt;ScrapeJob&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
                     <mxGeometry y="682" width="240" height="52" as="geometry"/>
                 </mxCell>
-                <mxCell id="301" value="- lambda$3(arg0: UUID): ResourceNotFoundExeption" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
+                <mxCell id="301" value="- lambda$3(arg0: UUID): ResourceNotFoundException" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
                     <mxGeometry y="734" width="240" height="52" as="geometry"/>
                 </mxCell>
-                <mxCell id="302" value="- lambda$1(arg0: UUID): ResourceNotFoundExeption" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
+                <mxCell id="302" value="- lambda$1(arg0: UUID): ResourceNotFoundException" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
                     <mxGeometry y="786" width="240" height="52" as="geometry"/>
                 </mxCell>
                 <mxCell id="303" value="+ deleteKey(id: UUID): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
@@ -916,10 +916,10 @@
                 <mxCell id="305" value="+ updateKey(id: UUID, updatedApiKey: ApiKeyRequest): ApiKey" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
                     <mxGeometry y="916" width="240" height="78" as="geometry"/>
                 </mxCell>
-                <mxCell id="306" value="- lambda$0(arg0: UUID): ResourceNotFoundExeption" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
+                <mxCell id="306" value="- lambda$0(arg0: UUID): ResourceNotFoundException" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
                     <mxGeometry y="994" width="240" height="52" as="geometry"/>
                 </mxCell>
-                <mxCell id="307" value="- lambda$2(arg0: String): ResourceNotFoundExeption" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
+                <mxCell id="307" value="- lambda$2(arg0: String): ResourceNotFoundException" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">
                     <mxGeometry y="1046" width="240" height="52" as="geometry"/>
                 </mxCell>
                 <mxCell id="308" value="+ isSearchQuerysEmpty(): boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;rounded=0;html=1;" parent="285" vertex="1">

@@ -13,21 +13,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import ir.netpick.mailmine.auth.jwt.JWTAuthenticationFilter;
 import ir.netpick.mailmine.common.exception.DelegatedAuthEntryPoint;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityFilterChainConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
     private final DelegatedAuthEntryPoint delegatedAuthEntryPoint;
-
-    public SecurityFilterChainConfig(AuthenticationProvider authenticationProvider,
-            JWTAuthenticationFilter jwtAuthenticationFilter, DelegatedAuthEntryPoint delegatedAuthEntryPoint) {
-        this.authenticationProvider = authenticationProvider;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.delegatedAuthEntryPoint = delegatedAuthEntryPoint;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -5,42 +5,41 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ir.netpick.mailmine.common.exception.ResourceNotFoundExeption;
+import ir.netpick.mailmine.common.exception.ResourceNotFoundException;
 import ir.netpick.mailmine.scrape.file.FileManagement;
 import ir.netpick.mailmine.scrape.model.ScrapeData;
+import ir.netpick.mailmine.scrape.parser.ContactInfoParser;
 import ir.netpick.mailmine.scrape.repository.ScrapeDataRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
-public class ScrapeStarterService {
-
-    private static final Logger logger = LogManager.getLogger(FileManagement.class);
+public class ScrapePipeline {
 
     private final ApiCaller apiCaller;
-    private final ScrapeService scrapeService;
-    private final PageScrape pageScrape;
+    private final SearchQueryService searchQueryService;
+    private final Scraper scraper;
     private final ScrapeDataRepository scrapeDataRepository;
     private final FileManagement fileManagement;
 
     public void linkGrabber() {
-        if (scrapeService.isSearchQuerysEmpty()) {
-            throw new ResourceNotFoundExeption("There is no Search Query please add one...");
+        if (searchQueryService.isEmpty()) {
+            throw new ResourceNotFoundException("There is no Search Query please add one...");
         }
-        logger.info("starting the google call...");
+        log.info("starting the google call...");
         apiCaller.callGoogleSearch();
-        logger.info("Link Grabber is Done.");
+        log.info("Link Grabber is Done.");
     }
 
     public void pageSourceGrabber() {
-        logger.info("starting to download the pages...");
-        pageScrape.webGet();
-        logger.info("Page Grabber is Done.");
+        log.info("starting to download the pages...");
+        scraper.scrapePendingJobs(true);
+        log.info("Page Grabber is Done.");
     }
 
     @Transactional
@@ -55,19 +54,19 @@ public class ScrapeStarterService {
                         scrapeData.getFileName());
 
                 if (!Files.exists(filePath)) {
-                    logger.warn("Missing file for record {}", scrapeData.getId());
+                    log.warn("Missing file for record {}", scrapeData.getId());
                     continue;
                 }
 
                 String content = Files.readString(filePath);
-                ContactInfoParser.parse(content); // parse and save contact info
+                ContactInfoParser.parse(content);
 
                 scrapeData.setParsed(true);
                 scrapeDataRepository.save(scrapeData);
 
-                logger.info("Successfully parsed and updated record {}", scrapeData.getId());
+                log.info("Successfully parsed and updated record {}", scrapeData.getId());
             } catch (IOException e) {
-                logger.error("Error processing file for record {}", scrapeData.getId(), e);
+                log.error("Error processing file for record {}", scrapeData.getId(), e);
             }
         }
     }
