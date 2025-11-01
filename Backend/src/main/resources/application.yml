@@ -7,7 +7,7 @@ spring:
     name: scrape
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/netpick_scrape
+    url: jdbc:postgresql://localhost:5432/mailmine
     username: postgres
     password: password
     hikari:
@@ -52,5 +52,7 @@ env:
 
 selenium:
   chrome:
-    chrome-location: "F:\\chrome-win64\\chrome-win64\\chrome.exe"
-    driver-location: "F:\\chromedriver-win64\\chromedriver.exe"
+    binary:
+      path: "F:\\chrome-win64\\chrome-win64\\chrome.exe"
+    driver:
+      path: "F:\\chromedriver-win64\\chromedriver.exe"
