@@ -23,9 +23,9 @@ import ir.netpick.mailmine.auth.model.User;
 import ir.netpick.mailmine.auth.repository.RoleRepository;
 import ir.netpick.mailmine.auth.repository.UserRepository;
 import ir.netpick.mailmine.common.enums.RoleEnum;
-import ir.netpick.mailmine.common.exception.DuplicateResourceExeption;
-import ir.netpick.mailmine.common.exception.RequestValidationExeption;
-import ir.netpick.mailmine.common.exception.ResourceNotFoundExeption;
+import ir.netpick.mailmine.common.exception.DuplicateResourceException;
+import ir.netpick.mailmine.common.exception.RequestValidationException;
+import ir.netpick.mailmine.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -56,14 +56,14 @@ public class UserService {
     public boolean isRegisterRequestValid(AuthenticationSignupRequest request) {
         String email = request.email();
         if (userRepository.existsUserByEmail(email)) {
-            throw new DuplicateResourceExeption("A User with this email already exists.");
+            throw new DuplicateResourceException("A User with this email already exists.");
         }
         if (!isEmailValidation(email)) {
-            throw new RequestValidationExeption("Email is not Valid.");
+            throw new RequestValidationException("Email is not Valid.");
         }
         if (request.password() == null ||
                 request.name() == null) {
-            throw new RequestValidationExeption("There is an empty parameter.");
+            throw new RequestValidationException("There is an empty parameter.");
         }
         return true;
     }
@@ -71,7 +71,7 @@ public class UserService {
     public User createAdministrator(AuthenticationSignupRequest request) {
 
         if (!isRegisterRequestValid(request)) {
-            throw new RequestValidationExeption("Request is not valid!");
+            throw new RequestValidationException("Request is not valid!");
         }
 
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.ADMIN);
@@ -91,7 +91,7 @@ public class UserService {
     public User createUser(AuthenticationSignupRequest request) {
 
         if (!isRegisterRequestValid(request)) {
-            throw new RequestValidationExeption("Request is not valid!");
+            throw new RequestValidationException("Request is not valid!");
         }
 
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
@@ -113,7 +113,7 @@ public class UserService {
 
     public UserDTO getUser(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundExeption("User with email [%s] was not found!".formatted(email)));
+                () -> new ResourceNotFoundException("User with email [%s] was not found!".formatted(email)));
         UserDTO userDTO = userDTOMapper.apply(user);
         return userDTO;
     };

@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class DefaultExceptionHandler {
-        @ExceptionHandler(ResourceNotFoundExeption.class)
-        public ResponseEntity<ApiError> handleException(ResourceNotFoundExeption e,
+        @ExceptionHandler(ResourceNotFoundException.class)
+        public ResponseEntity<ApiError> handleException(ResourceNotFoundException e,
                         HttpServletRequest request) {
                 ApiError apiError = new ApiError(
                                 request.getRequestURI(),
@@ -48,8 +48,8 @@ public class DefaultExceptionHandler {
                 return new ResponseEntity<ApiError>(apiError, HttpStatus.UNAUTHORIZED);
         }
 
-        @ExceptionHandler(DuplicateResourceExeption.class)
-        public ResponseEntity<ApiError> handleException(DuplicateResourceExeption e,
+        @ExceptionHandler(DuplicateResourceException.class)
+        public ResponseEntity<ApiError> handleException(DuplicateResourceException e,
                         HttpServletRequest request) {
                 ApiError apiError = new ApiError(
                                 request.getRequestURI(),
