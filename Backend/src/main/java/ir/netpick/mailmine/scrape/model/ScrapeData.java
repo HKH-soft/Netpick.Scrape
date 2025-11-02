@@ -1,28 +1,24 @@
 package ir.netpick.mailmine.scrape.model;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import ir.netpick.mailmine.common.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "scrape_data")
-public class ScrapeData {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
-    private UUID id;
+public class ScrapeData extends BaseEntity {
 
     @Column(name = "file_name", nullable = false)
     private String fileName;
@@ -52,62 +48,6 @@ public class ScrapeData {
     }
 
     public ScrapeData() {
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public ScrapeJob getScrapeJob() {
-        return scrapeJob;
-    }
-
-    public void setScrapeJob(ScrapeJob scrapeJob) {
-        this.scrapeJob = scrapeJob;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public boolean isParsed() {
-        return parsed;
-    }
-
-    public void setParsed(boolean parsed) {
-        this.parsed = parsed;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public int getAttemptNumber() {
-        return attemptNumber;
-    }
-
-    public void setAttemptNumber(int attemptNumber) {
-        this.attemptNumber = attemptNumber;
     }
 
 }

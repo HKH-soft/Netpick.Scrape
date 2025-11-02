@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ir.netpick.mailmine.scrape.service.ApiCaller;
+import ir.netpick.mailmine.scrape.service.ScrapePipeline;
 import ir.netpick.mailmine.scrape.service.Scraper;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/scrape")
@@ -19,6 +19,7 @@ public class ScrapeController {
 
     private final Scraper scrape;
     private final ApiCaller apiCaller;
+    private final ScrapePipeline scrapePipeline;
 
     @PostMapping("start-google")
     public void startSearch() {
@@ -26,8 +27,13 @@ public class ScrapeController {
     }
 
     @PostMapping("start-scrape")
-    public void startScrapping(@RequestBody String entity) {
+    public void startScrapping() {
         scrape.scrapePendingJobs(true);
+    }
+
+    @PostMapping("start-extract")
+    public void startExtract() {
+        scrapePipeline.processUnparsedFiles();
     }
 
 }

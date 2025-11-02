@@ -45,6 +45,7 @@ public class Scraper {
         List<ScrapeJob> scrapeJobs = fetchPendingJobs();
 
         if (scrapeJobs.isEmpty()) {
+            log.error("No Scrape job left");
             return;
         }
 
@@ -88,8 +89,8 @@ public class Scraper {
             // Clear cookies for next job to avoid session carryover
             driver.manage().deleteAllCookies();
         } catch (Exception e) {
+            scrapeJob.setScrapeFailed(true);
             log.error("Failed to process scrape job {}: {}", scrapeJob.getId(), e.getMessage(), e);
-            // Optionally, handle retry or failure status here
         }
     }
 

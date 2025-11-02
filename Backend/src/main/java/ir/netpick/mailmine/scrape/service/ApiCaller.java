@@ -56,6 +56,10 @@ public class ApiCaller {
         }
 
         for (SearchQuery query : queries) {
+            if (query.getSentence().isBlank()) {
+                log.error("Query with id {} is blank", query.getId());
+                continue;
+            }
             processQuery(query, keys);
         }
     }
@@ -64,6 +68,7 @@ public class ApiCaller {
         int keyIndex = 0;
         for (int page = 0; page < maxPages; page++) {
             ApiKey currentKey = keys.get(keyIndex);
+
             String uri = buildUri(query.getSentence(), page, currentKey);
 
             try {
