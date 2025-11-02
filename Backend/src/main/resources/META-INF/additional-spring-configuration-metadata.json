@@ -53,5 +53,15 @@
     "name": "selenium.chrome.driver.path",
     "type": "java.lang.String",
     "description": "A description for 'selenium.chrome.driver.path'"
+  },
+  {
+    "name": "google.search.results-per-page",
+    "type": "java.lang.String",
+    "description": "A description for 'google.search.results-per-page'"
+  },
+  {
+    "name": "google.search.max-pages",
+    "type": "java.lang.String",
+    "description": "A description for 'google.search.max-pages'"
   }
 ]}
