@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,19 @@ public class ScrapePipeline {
     private final Scraper scraper;
     private final ScrapeDataRepository scrapeDataRepository;
     private final FileManagement fileManagement;
+
+    @Scheduled(cron = "0 0 */3 * * *")
+    public void scheduledScrapeJob() {
+        log.info("===== Starting scheduled scraping pipeline =====");
+        try {
+            linkGrabber();
+            pageSourceGrabber();
+            processUnparsedFiles();
+            log.info("===== Scraping pipeline completed successfully =====");
+        } catch (Exception e) {
+            log.error("Error during scheduled scraping job", e);
+        }
+    }
 
     public void linkGrabber() {
         if (searchQueryService.isEmpty()) {
