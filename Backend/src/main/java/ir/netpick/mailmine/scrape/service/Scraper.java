@@ -41,6 +41,11 @@ public class Scraper {
     }
 
     @Async
+    public void scrapePendingJobs() {
+        scrapePendingJobs(true);
+    }
+
+    @Async
     public void scrapePendingJobs(boolean headless) {
         List<ScrapeJob> scrapeJobs = fetchPendingJobs();
 

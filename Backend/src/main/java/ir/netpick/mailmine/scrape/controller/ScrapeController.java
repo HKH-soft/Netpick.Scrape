@@ -1,11 +1,11 @@
 package ir.netpick.mailmine.scrape.controller;
 
+import ir.netpick.mailmine.scrape.service.DataProcessor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ir.netpick.mailmine.scrape.service.ApiCaller;
-import ir.netpick.mailmine.scrape.service.ScrapePipeline;
 import ir.netpick.mailmine.scrape.service.Scraper;
 import lombok.RequiredArgsConstructor;
 
@@ -19,8 +19,7 @@ public class ScrapeController {
 
     private final Scraper scrape;
     private final ApiCaller apiCaller;
-    private final ScrapePipeline scrapePipeline;
-
+    private final DataProcessor dataProcessor;
     @PostMapping("start-google")
     public void startSearch() {
         apiCaller.callGoogleSearch();
@@ -33,7 +32,7 @@ public class ScrapeController {
 
     @PostMapping("start-extract")
     public void startExtract() {
-        scrapePipeline.processUnparsedFiles();
+        dataProcessor.processUnparsedFiles();
     }
 
 }

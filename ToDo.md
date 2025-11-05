@@ -17,6 +17,8 @@
 
 - [ ] Write documentation for the project.
 
+- [ ] Fix the logical problem in ContactParser and DataProcessor
+
 - [ ] Review and fix the LLD (Low-Level Design) and HLD (High-Level Design).
 
 ### In Progress

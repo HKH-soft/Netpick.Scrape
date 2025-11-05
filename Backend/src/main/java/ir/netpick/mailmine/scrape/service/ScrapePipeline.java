@@ -1,22 +1,15 @@
 package ir.netpick.mailmine.scrape.service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-
-import org.springframework.scheduling.annotation.Async;
+import ir.netpick.mailmine.common.enums.PipelineStageEnum;
+import ir.netpick.mailmine.common.enums.PipelineStateEnum;
+import ir.netpick.mailmine.scrape.model.Pipeline;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import ir.netpick.mailmine.common.exception.ResourceNotFoundException;
-import ir.netpick.mailmine.scrape.file.FileManagement;
-import ir.netpick.mailmine.scrape.model.ScrapeData;
-import ir.netpick.mailmine.scrape.parser.ContactInfoParser;
-import ir.netpick.mailmine.scrape.repository.ScrapeDataRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
+import java.time.LocalDateTime;
 
 @Log4j2
 @Service
@@ -24,65 +17,36 @@ import lombok.extern.log4j.Log4j2;
 public class ScrapePipeline {
 
     private final ApiCaller apiCaller;
-    private final SearchQueryService searchQueryService;
     private final Scraper scraper;
-    private final ScrapeDataRepository scrapeDataRepository;
-    private final FileManagement fileManagement;
+    private final DataProcessor dataProcessor;
+    private final PipelineService pipelineService;
 
     @Scheduled(cron = "0 0 */3 * * *")
     public void scheduledScrapeJob() {
         log.info("===== Starting scheduled scraping pipeline =====");
+        Pipeline pipeline = new Pipeline(PipelineStageEnum.STARTED, PipelineStateEnum.RUNNING, LocalDateTime.now());
+        pipeline = pipelineService.createPipeline(pipeline);
         try {
-            linkGrabber();
-            pageSourceGrabber();
-            processUnparsedFiles();
+
+            apiCaller.callGoogleSearch();
+            pipeline.setStage(PipelineStageEnum.API_CALLER_COMPLETE);
+            pipelineService.updatePipeline(pipeline);
+
+            scraper.scrapePendingJobs();
+            pipeline.setStage(PipelineStageEnum.SCRAPER_COMPLETE);
+            pipelineService.updatePipeline(pipeline);
+
+            dataProcessor.processUnparsedFiles();
+            pipeline.setStage(PipelineStageEnum.PARSER_COMPLETE);
+            pipeline.setState(PipelineStateEnum.COMPLETED);
+            pipeline.setEndTime(LocalDateTime.now());
+            pipelineService.updatePipeline(pipeline);
             log.info("===== Scraping pipeline completed successfully =====");
         } catch (Exception e) {
             log.error("Error during scheduled scraping job", e);
-        }
-    }
-
-    public void linkGrabber() {
-        if (searchQueryService.isEmpty()) {
-            throw new ResourceNotFoundException("There is no Search Query please add one...");
-        }
-        log.info("starting the google call...");
-        apiCaller.callGoogleSearch();
-        log.info("Link Grabber is Done.");
-    }
-
-    public void pageSourceGrabber() {
-        log.info("starting to download the pages...");
-        scraper.scrapePendingJobs(true);
-        log.info("Page Grabber is Done.");
-    }
-
-    @Transactional
-    public void processUnparsedFiles() {
-        List<ScrapeData> unparsedFiles = scrapeDataRepository.findByParsedFalse();
-
-        for (ScrapeData scrapeData : unparsedFiles) {
-            try {
-                Path filePath = fileManagement.getFilePath(
-                        scrapeData.getScrapeJob().getId(),
-                        scrapeData.getAttemptNumber(),
-                        scrapeData.getFileName());
-
-                if (!Files.exists(filePath)) {
-                    log.warn("Missing file for record {}", scrapeData.getId());
-                    continue;
-                }
-
-                String content = Files.readString(filePath);
-                ContactInfoParser.parse(content);
-
-                scrapeData.setParsed(true);
-                scrapeDataRepository.save(scrapeData);
-
-                log.info("Successfully parsed and updated record {}", scrapeData.getId());
-            } catch (IOException e) {
-                log.error("Error processing file for record {}", scrapeData.getId(), e);
-            }
+            pipeline.setState(PipelineStateEnum.FAILED);
+            pipeline.setEndTime(LocalDateTime.now());
+            pipelineService.updatePipeline(pipeline);
         }
     }
 }

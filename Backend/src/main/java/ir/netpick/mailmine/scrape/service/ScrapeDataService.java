@@ -30,6 +30,10 @@ public class ScrapeDataService {
     @Value("${env.page-size:10}")
     private int pageSize;
 
+    public List<ScrapeData> findUnparsed(){
+        return scrapeDataRepository.findByParsedFalse();
+    }
+
     public List<ScrapeData> allDatas() {
         return scrapeDataRepository.findAll();
     }
@@ -47,6 +51,14 @@ public class ScrapeDataService {
         fileManagment.CreateAFile(scrapeJobId, scrapeJob.getAttempt(), fileName, pageData);
         ScrapeData scrapeData = new ScrapeData(fileName, scrapeJob.getAttempt(), scrapeJob);
         scrapeDataRepository.save(scrapeData);
+    }
+
+    public void updateScrapeData(ScrapeData scrapeData){
+        scrapeDataRepository.save(scrapeData);
+    }
+
+    public void deleteScrapeData(UUID scrapeJobId){
+        scrapeDataRepository.deleteById(scrapeJobId);
     }
 
 }
